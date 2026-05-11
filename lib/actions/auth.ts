@@ -41,7 +41,7 @@ export async function signUpWithEmail(
 
   if (error) return { error: error.message || "Registrace selhala" };
 
-  redirect("/auth/verify-email");
+  redirect(`/auth/verify-email?email=${encodeURIComponent(email)}`);
 }
 
 export async function signOut() {

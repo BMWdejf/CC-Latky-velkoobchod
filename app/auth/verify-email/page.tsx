@@ -1,28 +1,42 @@
 import Link from "next/link";
+import { VerifyEmailForm } from "@/components/forms/verify-email-form";
 
 export const metadata = { title: "Ověřte svůj e-mail" };
 
-export default function VerifyEmailPage() {
+export default async function VerifyEmailPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ email?: string }>;
+}) {
+  const { email = "" } = await searchParams;
+
   return (
-    <div className="space-y-6 text-center">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-semibold">Zkontrolujte svůj e-mail</h1>
+    <div className="space-y-6">
+      <div className="space-y-1 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          Ověřte svůj e-mail
+        </h1>
         <p className="text-sm text-muted-foreground">
-          Poslali jsme vám odkaz pro ověření účtu. Klikněte na něj a přihlaste
-          se.
+          Odeslali jsme ověřovací kód na{" "}
+          {email ? (
+            <span className="font-medium text-foreground">{email}</span>
+          ) : (
+            "váš e-mail"
+          )}
+          .
         </p>
       </div>
 
-      <p className="text-xs text-muted-foreground">
-        Nenašli jste e-mail? Zkontrolujte složku se spamem.
-      </p>
+      <VerifyEmailForm email={email} />
 
-      <Link
-        href="/auth/login"
-        className="text-sm text-primary underline-offset-4 hover:underline"
-      >
-        Zpět na přihlášení
-      </Link>
+      <p className="text-center text-sm text-muted-foreground">
+        <Link
+          href="/auth/login"
+          className="font-medium underline underline-offset-4 hover:text-primary"
+        >
+          Zpět na přihlášení
+        </Link>
+      </p>
     </div>
   );
 }
