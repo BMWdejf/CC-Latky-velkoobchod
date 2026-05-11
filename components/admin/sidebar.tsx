@@ -4,6 +4,7 @@ import {
   Package,
   ShoppingCart,
   Users,
+  FileText,
   MessageSquare,
   Settings,
 } from "lucide-react";
@@ -13,6 +14,7 @@ const navItems = [
   { href: "/dashboard/products", label: "Produkty", icon: Package },
   { href: "/dashboard/orders", label: "Objednávky", icon: ShoppingCart },
   { href: "/dashboard/customers", label: "Zákazníci", icon: Users },
+  { href: "/dashboard/invoices", label: "Faktury", icon: FileText },
   { href: "/dashboard/support", label: "Podpora", icon: MessageSquare },
   { href: "/dashboard/settings", label: "Nastavení", icon: Settings },
 ];
