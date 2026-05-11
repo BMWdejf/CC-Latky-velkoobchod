@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export default async function AccountProfilePage() {
   const { data: session } = await auth.getSession();
   if (!session) redirect("/auth/login");
-  if (session.user.role !== USER_ROLES.CUSTOMER) redirect("/dashboard");
+  if (session.user.role === USER_ROLES.ADMIN) redirect("/dashboard");
 
   const [profile, details] = await Promise.all([
     getProfile(session.user.id),

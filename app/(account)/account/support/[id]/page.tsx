@@ -29,7 +29,7 @@ export default async function AccountTicketDetailPage({
   const { id } = await params;
   const { data: session } = await auth.getSession();
   if (!session) redirect("/auth/login");
-  if (session.user.role !== USER_ROLES.CUSTOMER) redirect("/dashboard");
+  if (session.user.role === USER_ROLES.ADMIN) redirect("/dashboard");
 
   const customer = await getCustomerByUserId(session.user.id);
   if (!customer) notFound();

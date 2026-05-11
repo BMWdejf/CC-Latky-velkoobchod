@@ -14,7 +14,7 @@ export default async function AccountLayout({
   const { data: session } = await auth.getSession();
 
   if (!session) redirect("/auth/login");
-  if (session.user.role !== USER_ROLES.CUSTOMER) redirect("/dashboard");
+  if (session.user.role === USER_ROLES.ADMIN) redirect("/dashboard");
 
   const userName = session.user.name ?? session.user.email;
   const userEmail = session.user.email;
