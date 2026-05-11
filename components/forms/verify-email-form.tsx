@@ -17,26 +17,38 @@ export function VerifyEmailForm({ email }: { email: string }) {
     e.preventDefault();
     setError(null);
     startTransition(async () => {
-      const { error } = await authClient.emailOtp.verifyEmail({ email, otp });
-      if (error) {
-        setError(error.message || "Neplatný kód. Zkuste to znovu.");
-      } else {
-        toast.success("E-mail byl úspěšně ověřen");
-        router.push("/account");
+      try {
+        const { error } = await authClient.emailOtp.verifyEmail({ email, otp });
+        if (error) {
+          setError(error.message || "Neplatný kód. Zkuste to znovu.");
+        } else {
+          toast.success("E-mail byl úspěšně ověřen");
+          router.push("/account");
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Neplatný kód. Zkuste to znovu."
+        );
       }
     });
   }
 
   function handleResend() {
     startResend(async () => {
-      const { error } = await authClient.emailOtp.sendVerificationOtp({
-        email,
-        type: "email-verification",
-      });
-      if (error) {
-        toast.error(error.message || "Nepodařilo se odeslat kód");
-      } else {
-        toast.success("Nový kód byl odeslán");
+      try {
+        const { error } = await authClient.emailOtp.sendVerificationOtp({
+          email,
+          type: "email-verification",
+        });
+        if (error) {
+          toast.error(error.message || "Nepodařilo se odeslat kód");
+        } else {
+          toast.success("Nový kód byl odeslán");
+        }
+      } catch (err) {
+        toast.error(
+          err instanceof Error ? err.message : "Nepodařilo se odeslat kód"
+        );
       }
     });
   }
