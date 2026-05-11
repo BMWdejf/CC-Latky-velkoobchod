@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import { useActionState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { updateOrderStatus } from "@/lib/actions/orders";
 import type { ActionResult } from "@/types";
@@ -32,10 +34,11 @@ export function OrderStatusSelector({
     null
   );
 
-  const formError =
-    state && !state.success && typeof state.error === "string"
-      ? state.error
-      : null;
+  useEffect(() => {
+    if (!state) return;
+    if (state.success) toast.success("Stav objednávky uložen");
+    else if (typeof state.error === "string") toast.error(state.error);
+  }, [state]);
 
   return (
     <form action={formAction} className="flex items-center gap-2">
@@ -53,14 +56,6 @@ export function OrderStatusSelector({
       <Button type="submit" size="sm" disabled={isPending}>
         {isPending ? "Ukládám…" : "Uložit stav"}
       </Button>
-      {formError && (
-        <span className="text-xs text-destructive">{formError}</span>
-      )}
-      {state?.success && (
-        <span className="text-xs text-green-600 dark:text-green-400">
-          Uloženo
-        </span>
-      )}
     </form>
   );
 }
