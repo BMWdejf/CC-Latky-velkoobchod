@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import { useActionState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import type { ActionResult } from "@/types";
 import type { TicketMessageRow } from "@/lib/queries/tickets";
@@ -40,6 +42,12 @@ export function TicketThread({
     state && !state.success && typeof state.error === "string"
       ? state.error
       : null;
+
+  useEffect(() => {
+    if (!state) return;
+    if (state.success) toast.success("Zpráva odeslána");
+    else if (typeof state.error === "string") toast.error(state.error);
+  }, [state]);
 
   return (
     <div className="space-y-4">
@@ -97,16 +105,9 @@ export function TicketThread({
           {formError && (
             <p className="text-xs text-destructive">{formError}</p>
           )}
-          <div className="flex items-center gap-3">
-            <Button type="submit" size="sm" disabled={isPending}>
-              {isPending ? "Odesílám…" : "Odeslat zprávu"}
-            </Button>
-            {state?.success && (
-              <span className="text-xs text-green-600 dark:text-green-400">
-                Zpráva odeslána
-              </span>
-            )}
-          </div>
+          <Button type="submit" size="sm" disabled={isPending}>
+            {isPending ? "Odesílám…" : "Odeslat zprávu"}
+          </Button>
         </form>
       ) : (
         <p className="border-t border-border pt-4 text-sm text-muted-foreground">
