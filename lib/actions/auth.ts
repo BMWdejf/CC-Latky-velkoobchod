@@ -32,11 +32,16 @@ export async function signUpWithEmail(
   if (!email || !name || !password)
     return { error: "Všechna pole jsou povinná" };
 
-  const { error } = await auth.signUp.email({ email, name, password });
+  const { error } = await auth.signUp.email({
+    email,
+    name,
+    password,
+    callbackURL: "/account",
+  });
 
   if (error) return { error: error.message || "Registrace selhala" };
 
-  redirect("/account");
+  redirect("/auth/verify-email");
 }
 
 export async function signOut() {
