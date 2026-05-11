@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { LayoutDashboard, ShoppingCart, FileText, User } from "lucide-react";
+import { LayoutDashboard, ShoppingCart, FileText, MessageSquare, User } from "lucide-react";
 
 const navItems = [
   { href: "/account", label: "Přehled", icon: LayoutDashboard },
   { href: "/account/orders", label: "Objednávky", icon: ShoppingCart },
   { href: "/account/invoices", label: "Faktury", icon: FileText },
+  { href: "/account/support", label: "Podpora", icon: MessageSquare },
   { href: "/account/profile", label: "Profil", icon: User },
 ];
 
