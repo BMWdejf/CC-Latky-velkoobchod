@@ -1,17 +1,39 @@
 "use client";
 
-import { useActionState } from "react";
-import { signInWithEmail } from "@/lib/actions/auth";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth/client";
 import { Button } from "@/components/ui/button";
 
 export function LoginForm() {
-  const [state, action, isPending] = useActionState(signInWithEmail, null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    startTransition(async () => {
+      try {
+        const { error } = await authClient.signIn.email({ email, password });
+        if (error) {
+          setError(error.message || "Přihlášení selhalo");
+        } else {
+          router.push("/account");
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Přihlášení selhalo"
+        );
+      }
+    });
+  }
 
   return (
-    <form action={action} className="space-y-4">
-      {state?.error && (
-        <p className="text-sm text-destructive">{state.error}</p>
-      )}
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && <p className="text-sm text-destructive">{error}</p>}
 
       <div className="space-y-1">
         <label htmlFor="email" className="text-sm font-medium">
@@ -23,6 +45,8 @@ export function LoginForm() {
           type="email"
           autoComplete="email"
           required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           placeholder="vas@email.cz"
         />
@@ -38,6 +62,8 @@ export function LoginForm() {
           type="password"
           autoComplete="current-password"
           required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           placeholder="••••••••"
         />
