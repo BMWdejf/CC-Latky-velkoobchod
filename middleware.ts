@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 import { USER_ROLES } from "@/lib/constants";
 
-export async function proxy(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const { data: session } = await auth.getSession();
   const { pathname } = request.nextUrl;
 
@@ -21,7 +21,7 @@ export async function proxy(request: NextRequest) {
 
   // ─── Neplatná/chybějící role → bezpečné přesměrování ────────────────────
   if (!role || (role !== USER_ROLES.ADMIN && role !== USER_ROLES.CUSTOMER)) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
+    return NextResponse.next();
   }
 
   // ─── Customer se pokouší o admin sekci ──────────────────────────────────
