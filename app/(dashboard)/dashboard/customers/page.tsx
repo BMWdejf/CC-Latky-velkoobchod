@@ -21,6 +21,8 @@ export default async function CustomersPage() {
     getUsers(),
   ]);
 
+  const nonAdminUsers = allUsers.filter((u) => u.role !== USER_ROLES.ADMIN);
+
   return (
     <div className="space-y-10">
       <div className="space-y-6">
@@ -33,7 +35,12 @@ export default async function CustomersPage() {
             Přidat zákazníka
           </Link>
         </div>
-        <UsersTable users={allUsers} />
+        <CustomersTable customers={allCustomers} />
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold">Správa uživatelů</h2>
+        <UsersTable users={nonAdminUsers} />
       </div>
     </div>
   );
