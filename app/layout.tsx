@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Archivo, Geist_Mono } from "next/font/google";
+import { Inter, Archivo, Geist_Mono, Playfair_Display, Dancing_Script } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import "./globals.css";
@@ -19,6 +19,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const playfairDisplay = Playfair_Display({
+  variable: "--font-playfair-display",
+  subsets: ["latin", "latin-ext"],
+});
+
+const dancingScript = Dancing_Script({
+  variable: "--font-dancing-script",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: {
     template: "%s | Latkový velkoobchod",
@@ -35,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="cs"
-      className={`${inter.variable} ${archivo.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${archivo.variable} ${geistMono.variable} ${playfairDisplay.variable} ${dancingScript.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
