@@ -11,9 +11,9 @@ export type NeonUser = {
 export async function getUsers(): Promise<NeonUser[]> {
   const sql = neon(process.env.DATABASE_URL!);
   const rows = await sql`
-    SELECT id, name, email, created_at AS "createdAt", role
-    FROM neon_auth.users
-    ORDER BY created_at DESC
+    SELECT id, name, email, "createdAt", role
+    FROM neon_auth."user"
+    ORDER BY "createdAt" DESC
   `;
   return rows as NeonUser[];
 }

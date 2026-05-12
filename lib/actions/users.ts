@@ -26,7 +26,7 @@ export async function updateUserRole(
   }
 
   const sql = neon(process.env.DATABASE_URL!);
-  await sql`UPDATE neon_auth.users SET role = ${role} WHERE id = ${userId}`;
+  await sql`UPDATE neon_auth."user" SET role = ${role} WHERE id = ${userId}`;
 
   revalidatePath("/dashboard/customers");
   return { success: true };
