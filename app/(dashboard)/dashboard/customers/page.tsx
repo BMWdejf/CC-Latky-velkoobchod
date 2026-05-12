@@ -33,11 +33,6 @@ export default async function CustomersPage() {
             Přidat zákazníka
           </Link>
         </div>
-        <CustomersTable customers={allCustomers} />
-      </div>
-
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold">Správa uživatelů</h2>
         <UsersTable users={allUsers} />
       </div>
     </div>
