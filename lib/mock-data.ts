@@ -1,160 +1,70 @@
-export type Product = {
-  id: string;
-  name: string;
-  brand: string;
-  price: number;
-  salePrice: number | null;
-  image: string;
-  isNew: boolean;
-  isSale: boolean;
-  rating: number;
-  reviews: number;
-};
+export const PRODUCTS = Array.from({ length: 12 }, (_, i) => ({
+  id: String(i + 1),
+  name: [
+    "Bavlněná tkanina premium",
+    "Přírodní hedvábí",
+    "Lněná tkanina",
+    "Viskóza s tiskem",
+    "Úplet bambusový",
+    "Satén polyester",
+    "Fleece termo",
+    "Denim těžký",
+    "Šifon jemný",
+    "Kanvas pevný",
+    "Žakár dekorační",
+    "Tyl jemný",
+  ][i],
+  brand: [
+    "CottonLux", "SilkPro", "LinenCraft", "VisCo", "BambuTex", "GlossLine",
+    "WarmTex", "DenimHouse", "ChiffonEl", "CanvasK", "JacquardH", "TulleS",
+  ][i],
+  rating: (4.7 + (i % 3) * 0.1).toFixed(1),
+  reviewCount: [180, 240, 95, 310, 72, 155, 88, 205, 63, 140, 190, 47][i],
+  price: [89, 349, 129, 99, 149, 79, 109, 189, 69, 119, 199, 49][i],
+  originalPrice: [null, null, null, 129, null, 99, null, 249, null, 149, null, 69][i] as number | null,
+  image: `https://placehold.co/300x380/EEF2FF/0B5FFF?text=Latka+${i + 1}`,
+  colors: ["#2C3E7A", "#C0392B", "#27AE60", "#F39C12"].slice(0, 2 + (i % 3)),
+  sizes: ["XS", "S", "M", "L", "XL"],
+  tab: (["new", "new", "bestseller", "new", "sale", "bestseller",
+         "new", "sale", "bestseller", "new", "sale", "bestseller"] as const)[i],
+}));
 
-export type Category = {
-  id: string;
-  label: string;
-  image: string;
-  href: string;
-};
-
-export const MOCK_PRODUCTS: Product[] = [
-  {
-    id: "1",
-    name: "Bavlněná tkanina premium",
-    brand: "CottonLux",
-    price: 89,
-    salePrice: 71,
-    image: "https://placehold.co/300x380/eceef8/0067ff?text=Bavlna",
-    isNew: false,
-    isSale: true,
-    rating: 4.8,
-    reviews: 124,
-  },
-  {
-    id: "2",
-    name: "Přírodní hedvábí",
-    brand: "SilkPro",
-    price: 349,
-    salePrice: null,
-    image: "https://placehold.co/300x380/f9ebeb/ed0006?text=Hedv%C3%A1b%C3%AD",
-    isNew: true,
-    isSale: false,
-    rating: 5.0,
-    reviews: 56,
-  },
-  {
-    id: "3",
-    name: "Lněná tkanina organická",
-    brand: "LinenCraft",
-    price: 129,
-    salePrice: null,
-    image: "https://placehold.co/300x380/e6f2ec/027e46?text=L%C3%ADno",
-    isNew: true,
-    isSale: false,
-    rating: 4.6,
-    reviews: 89,
-  },
-  {
-    id: "4",
-    name: "Viskóza s tiskem",
-    brand: "VisCo",
-    price: 99,
-    salePrice: 79,
-    image: "https://placehold.co/300x380/f4f8ff/0067ff?text=Visk%C3%B3za",
-    isNew: false,
-    isSale: true,
-    rating: 4.3,
-    reviews: 201,
-  },
-  {
-    id: "5",
-    name: "Úplet bambusový",
-    brand: "BambuTex",
-    price: 149,
-    salePrice: null,
-    image: "https://placehold.co/300x380/f9f3cf/a06c33?text=%C3%9Aplet",
-    isNew: true,
-    isSale: false,
-    rating: 4.9,
-    reviews: 73,
-  },
-  {
-    id: "6",
-    name: "Satén polyesterový",
-    brand: "GlossLine",
-    price: 79,
-    salePrice: 59,
-    image: "https://placehold.co/300x380/eceef8/273569?text=Sat%C3%A9n",
-    isNew: false,
-    isSale: true,
-    rating: 4.1,
-    reviews: 312,
-  },
-  {
-    id: "7",
-    name: "Fleece termo",
-    brand: "WarmTex",
-    price: 109,
-    salePrice: null,
-    image: "https://placehold.co/300x380/f0f2f5/344054?text=Fleece",
-    isNew: false,
-    isSale: false,
-    rating: 4.7,
-    reviews: 147,
-  },
-  {
-    id: "8",
-    name: "Denim těžký",
-    brand: "DenimHouse",
-    price: 189,
-    salePrice: 149,
-    image: "https://placehold.co/300x380/e8ebf6/22284f?text=Denim",
-    isNew: false,
-    isSale: true,
-    rating: 4.5,
-    reviews: 98,
-  },
+export const CATEGORIES_STRIP = [
+  { label: "Sukně",   icon: "https://placehold.co/48x48/EEF2FF/0B5FFF?text=S" },
+  { label: "Košile",  icon: "https://placehold.co/48x48/EEF2FF/0B5FFF?text=K" },
+  { label: "Kabáty",  icon: "https://placehold.co/48x48/EEF2FF/0B5FFF?text=Ka" },
+  { label: "Kalhoty", icon: "https://placehold.co/48x48/EEF2FF/0B5FFF?text=Kl" },
+  { label: "Šály",    icon: "https://placehold.co/48x48/EEF2FF/0B5FFF?text=Sal" },
+  { label: "Trička",  icon: "https://placehold.co/48x48/EEF2FF/0B5FFF?text=T" },
+  { label: "Doplňky", icon: "https://placehold.co/48x48/EEF2FF/0B5FFF?text=D" },
 ];
 
-export const MOCK_CATEGORIES: Category[] = [
+export const SHOP_CATEGORIES = [
   {
-    id: "1",
-    label: "Pro ženy",
-    image: "https://placehold.co/400x500/eceef8/273569?text=Pro+%C5%BEeny",
-    href: "/katalog/zeny",
-  },
-  {
-    id: "2",
-    label: "Pro muže",
-    image: "https://placehold.co/400x500/e8ebf6/22284f?text=Pro+mu%C5%BEe",
+    label: "Pro Muže",
+    sub: "Stylové tkaniny pro pánskou módu",
+    image: "https://placehold.co/400x220/F5F0E8/6B4226?text=Pro+Muze",
     href: "/katalog/muzi",
+    bgClass: "bg-[#F5F0E8]",
   },
   {
-    id: "3",
-    label: "Doplňky",
-    image: "https://placehold.co/400x500/f9f3cf/a06c33?text=Dopl%C5%88ky",
-    href: "/katalog/doplnky",
+    label: "Pro Ženy",
+    sub: "Prémiové látky pro dámskou kolekci",
+    image: "https://placehold.co/400x220/FDF2F4/9B2335?text=Pro+Zeny",
+    href: "/katalog/zeny",
+    bgClass: "bg-[#FDF2F4]",
+  },
+  {
+    label: "Pro Děti",
+    sub: "Bezpečné a příjemné materiály",
+    image: "https://placehold.co/400x220/FFFBEB/B45309?text=Pro+Deti",
+    href: "/katalog/deti",
+    bgClass: "bg-[#FFFBEB]",
   },
 ];
 
-export const HERO_PRODUCTS = [
-  {
-    id: "h1",
-    label: "Letní kolekce",
-    discount: "20% SLEVA",
-    image: "https://placehold.co/180x220/eceef8/0067ff?text=Kolekce+1",
-  },
-  {
-    id: "h2",
-    label: "Prémiové látky",
-    discount: "25% SLEVA",
-    image: "https://placehold.co/180x220/e6f2ec/027e46?text=Kolekce+2",
-  },
-  {
-    id: "h3",
-    label: "Nová sezona",
-    discount: "30% SLEVA",
-    image: "https://placehold.co/180x220/f9ebeb/ed0006?text=Kolekce+3",
-  },
-];
+export const INSTAGRAM_PHOTOS = Array.from({ length: 5 }, (_, i) => ({
+  id: String(i + 1),
+  image: `https://placehold.co/300x300/EEF2FF/0B5FFF?text=Foto+${i + 1}`,
+  href: "https://instagram.com",
+}));
