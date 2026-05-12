@@ -24,6 +24,9 @@ describe("lib/auth", () => {
     const { createNeonAuth } = await import("@neondatabase/auth/next/server");
     const { auth } = await import("./index");
 
+    // Lazy init: createNeonAuth is called on first property access
+    void auth.getSession;
+
     expect(createNeonAuth).toHaveBeenCalledWith({
       baseUrl: "https://test.neon.tech/auth",
       cookies: {
