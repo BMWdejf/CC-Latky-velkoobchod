@@ -4,6 +4,7 @@ import { USER_ROLES } from "@/lib/constants";
 import { getProductById, getCategories } from "@/lib/queries/products";
 import { updateProduct } from "@/lib/actions/products";
 import { ProductForm } from "@/components/forms/product-form";
+import { ProductImageUpload } from "@/components/forms/product-image-upload";
 
 export const metadata = { title: "Upravit produkt" };
 export const dynamic = "force-dynamic";
@@ -27,7 +28,7 @@ export default async function EditProductPage({
   const updateProductWithId = updateProduct.bind(null, id);
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="mx-auto max-w-2xl space-y-8">
       <h1 className="text-2xl font-semibold">Upravit produkt</h1>
       <ProductForm
         action={updateProductWithId}
@@ -35,6 +36,8 @@ export default async function EditProductPage({
         categories={allCategories}
         submitLabel="Uložit změny"
       />
+      <hr className="border-border" />
+      <ProductImageUpload productId={id} initialImages={product.images} />
     </div>
   );
 }

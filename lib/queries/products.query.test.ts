@@ -17,12 +17,15 @@ vi.mock("@/lib/db", () => ({
 
 vi.mock("@/lib/db/schema", () => ({
   products: { adminUserId: "adminUserId", id: "id", createdAt: "createdAt" },
+  productImages: { productId: "productId", position: "position" },
+  categories: { id: "id" },
 }));
 
 vi.mock("drizzle-orm", () => ({
   eq: vi.fn((col, val) => `${String(col)}=${val}`),
   and: vi.fn((...args) => args.join(" AND ")),
   desc: vi.fn((col) => `${String(col)} DESC`),
+  asc: vi.fn((col) => `${String(col)} ASC`),
 }));
 
 describe("lib/queries/products", () => {
@@ -58,12 +61,14 @@ describe("lib/queries/products", () => {
   describe("getProductById", () => {
     it("returns product when found", async () => {
       const mockProduct = { id: "prod-1", name: "Látka", adminUserId: "admin-1" };
+      const mockImages = [{ id: "img-1", productId: "prod-1", url: "http://x.com/a.jpg", position: 0 }];
       mockSelect.mockResolvedValueOnce([mockProduct]);
+      mockSelect.mockResolvedValueOnce(mockImages);
 
       const { getProductById } = await import("./products");
       const result = await getProductById("prod-1", "admin-1");
 
-      expect(result).toEqual(mockProduct);
+      expect(result).toEqual({ ...mockProduct, images: mockImages });
     });
 
     it("returns null when not found", async () => {
