@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { USER_ROLES } from "@/lib/constants";
+import { getCategories } from "@/lib/queries/products";
 import { ProductForm } from "@/components/forms/product-form";
 import { createProduct } from "@/lib/actions/products";
 
@@ -12,10 +13,16 @@ export default async function NewProductPage() {
   if (!session) redirect("/auth/login");
   if (session.user.role !== USER_ROLES.ADMIN) redirect("/account");
 
+  const allCategories = await getCategories();
+
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <h1 className="text-2xl font-semibold">Nový produkt</h1>
-      <ProductForm action={createProduct} submitLabel="Vytvořit produkt" />
+      <ProductForm
+        action={createProduct}
+        categories={allCategories}
+        submitLabel="Vytvořit produkt"
+      />
     </div>
   );
 }

@@ -17,6 +17,16 @@ async function requireAdmin() {
   return session;
 }
 
+function toInsertValues(data: ReturnType<typeof productSchema.parse>) {
+  return {
+    ...data,
+    price: String(data.price),
+    compareAtPrice: data.compareAtPrice != null ? String(data.compareAtPrice) : null,
+    weight: data.weight != null ? String(data.weight) : null,
+    categoryId: data.categoryId ?? null,
+  };
+}
+
 export async function createProduct(
   _prevState: unknown,
   formData: FormData
@@ -30,19 +40,22 @@ export async function createProduct(
 
   try {
     await db.insert(products).values({
-      ...validated.data,
-      price: String(validated.data.price),
+      ...toInsertValues(validated.data),
       adminUserId: session.user.id,
     });
   } catch (err) {
     console.error("[createProduct]", err);
     if (err instanceof Error && err.message.includes("unique")) {
-      return { success: false, error: { sku: ["SKU již existuje"] } };
+      const msg: Record<string, string[]> = err.message.includes("slug")
+        ? { slug: ["Slug již existuje"] }
+        : { sku: ["SKU již existuje"] };
+      return { success: false, error: msg };
     }
     return { success: false, error: "Chyba serveru. Zkus to znovu." };
   }
 
   revalidatePath("/dashboard/products");
+  revalidatePath("/products");
   redirect("/dashboard/products");
 }
 
@@ -59,12 +72,20 @@ export async function updateProduct(
   }
 
   try {
-    const { price, ...rest } = validated.data;
+    const { price, compareAtPrice, weight, categoryId, ...rest } = validated.data;
     const updateData = {
       ...rest,
       ...(price !== undefined && { price: String(price) }),
+      ...(compareAtPrice !== undefined && {
+        compareAtPrice: compareAtPrice != null ? String(compareAtPrice) : null,
+      }),
+      ...(weight !== undefined && {
+        weight: weight != null ? String(weight) : null,
+      }),
+      ...(categoryId !== undefined && { categoryId: categoryId ?? null }),
       updatedAt: new Date(),
     };
+
     const result = await db
       .update(products)
       .set(updateData)
@@ -78,13 +99,17 @@ export async function updateProduct(
   } catch (err) {
     console.error("[updateProduct]", err);
     if (err instanceof Error && err.message.includes("unique")) {
-      return { success: false, error: { sku: ["SKU již existuje"] } };
+      const msg: Record<string, string[]> = err.message.includes("slug")
+        ? { slug: ["Slug již existuje"] }
+        : { sku: ["SKU již existuje"] };
+      return { success: false, error: msg };
     }
     return { success: false, error: "Chyba serveru. Zkus to znovu." };
   }
 
   revalidatePath("/dashboard/products");
   revalidatePath(`/dashboard/products/${id}`);
+  revalidatePath("/products");
   redirect("/dashboard/products");
 }
 
@@ -98,4 +123,5 @@ export async function deleteProduct(id: string): Promise<void> {
     );
 
   revalidatePath("/dashboard/products");
+  revalidatePath("/products");
 }

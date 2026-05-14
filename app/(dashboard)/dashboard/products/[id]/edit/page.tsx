@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { USER_ROLES } from "@/lib/constants";
-import { getProductById } from "@/lib/queries/products";
+import { getProductById, getCategories } from "@/lib/queries/products";
 import { updateProduct } from "@/lib/actions/products";
 import { ProductForm } from "@/components/forms/product-form";
 
@@ -18,7 +18,10 @@ export default async function EditProductPage({
   if (!session) redirect("/auth/login");
   if (session.user.role !== USER_ROLES.ADMIN) redirect("/account");
 
-  const product = await getProductById(id, session.user.id);
+  const [product, allCategories] = await Promise.all([
+    getProductById(id, session.user.id),
+    getCategories(),
+  ]);
   if (!product) notFound();
 
   const updateProductWithId = updateProduct.bind(null, id);
@@ -29,6 +32,7 @@ export default async function EditProductPage({
       <ProductForm
         action={updateProductWithId}
         product={product}
+        categories={allCategories}
         submitLabel="Uložit změny"
       />
     </div>
