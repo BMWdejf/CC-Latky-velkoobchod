@@ -47,7 +47,7 @@ export default async function ProductDetailPage({ params }: Props) {
         <div className="flex flex-col justify-center space-y-5">
           {product.category && (
             <Link
-              href={`/products?category=${product.category.slug}`}
+              href={`/katalog?category=${product.category.slug}`}
               className="text-xs font-medium text-primary hover:underline uppercase tracking-wide"
             >
               {product.category.name}
@@ -120,7 +120,7 @@ export default async function ProductDetailPage({ params }: Props) {
           </dl>
 
           <Link
-            href="/products"
+            href="/katalog"
             className={buttonVariants({ variant: "outline" })}
           >
             ← Zpět na katalog

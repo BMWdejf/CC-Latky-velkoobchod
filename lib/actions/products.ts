@@ -55,7 +55,7 @@ export async function createProduct(
   }
 
   revalidatePath("/dashboard/products");
-  revalidatePath("/products");
+  revalidatePath("/katalog");
   redirect("/dashboard/products");
 }
 
@@ -109,7 +109,7 @@ export async function updateProduct(
 
   revalidatePath("/dashboard/products");
   revalidatePath(`/dashboard/products/${id}`);
-  revalidatePath("/products");
+  revalidatePath("/katalog");
   redirect("/dashboard/products");
 }
 
@@ -123,5 +123,5 @@ export async function deleteProduct(id: string): Promise<void> {
     );
 
   revalidatePath("/dashboard/products");
-  revalidatePath("/products");
+  revalidatePath("/katalog");
 }
