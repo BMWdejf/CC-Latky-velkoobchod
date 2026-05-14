@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { USER_ROLES } from "@/lib/constants";
@@ -73,6 +74,33 @@ export default async function ProductDetailPage({
           </div>
         )}
       </dl>
+
+      {product.images.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm font-medium">Obrázky ({product.images.length})</p>
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+            {product.images.map((img, index) => (
+              <div
+                key={img.id}
+                className={`relative aspect-square overflow-hidden rounded-lg border border-border bg-muted ${index === 0 ? "ring-2 ring-primary" : ""}`}
+              >
+                <Image
+                  src={img.url}
+                  alt={img.alt ?? "Obrázek produktu"}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+                {index === 0 && (
+                  <span className="absolute bottom-1 left-1 rounded bg-primary px-1 py-0.5 text-[10px] font-semibold text-primary-foreground">
+                    Hlavní
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <Link
         href="/dashboard/products"

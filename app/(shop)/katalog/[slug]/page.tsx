@@ -32,15 +32,47 @@ export default async function ProductDetailPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-        {/* Obrázek */}
-        <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-muted">
-          <Image
-            src={`https://placehold.co/600x800/EEF2FF/0B5FFF?text=${encodeURIComponent(product.name)}`}
-            alt={product.name}
-            fill
-            className="object-cover"
-            unoptimized
-          />
+        {/* Obrázky */}
+        <div className="space-y-3">
+          {/* Hlavní obrázek */}
+          <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-muted">
+            {product.images.length > 0 ? (
+              <Image
+                src={product.images[0].url}
+                alt={product.images[0].alt ?? product.name}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            ) : (
+              <Image
+                src={`https://placehold.co/600x800/EEF2FF/0B5FFF?text=${encodeURIComponent(product.name)}`}
+                alt={product.name}
+                fill
+                className="object-cover"
+                unoptimized
+              />
+            )}
+          </div>
+          {/* Miniatury */}
+          {product.images.length > 1 && (
+            <div className="grid grid-cols-5 gap-2">
+              {product.images.map((img, i) => (
+                <div
+                  key={img.id}
+                  className={`relative aspect-square overflow-hidden rounded-lg bg-muted ${i === 0 ? "ring-2 ring-primary" : ""}`}
+                >
+                  <Image
+                    src={img.url}
+                    alt={img.alt ?? product.name}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Detail */}
