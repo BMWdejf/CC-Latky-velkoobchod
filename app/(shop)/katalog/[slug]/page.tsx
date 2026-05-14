@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getPublicProductBySlug } from "@/lib/queries/products";
 import { RichTextContent } from "@/components/rich-text-content";
 import { buttonVariants } from "@/components/ui/button";
+import { ProductCTA } from "@/components/shop/product-cta";
 import type { Metadata } from "next";
 
 interface Props {
@@ -150,6 +151,8 @@ export default async function ProductDetailPage({ params }: Props) {
               </div>
             )}
           </dl>
+
+          <ProductCTA productName={product.name} />
 
           <Link
             href="/katalog"
