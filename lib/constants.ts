@@ -1,3 +1,10 @@
+export const PRODUCT_STATUS = {
+  ACTIVE: "active",
+  INACTIVE: "inactive",
+} as const;
+
+export type ProductStatus = (typeof PRODUCT_STATUS)[keyof typeof PRODUCT_STATUS];
+
 export const USER_ROLES = {
   ADMIN: "admin",
   CUSTOMER: "customer",

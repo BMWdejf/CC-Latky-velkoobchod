@@ -65,6 +65,7 @@ describe("lib/actions/products", () => {
 
       const fd = new FormData();
       fd.set("name", "Bavlněná látka");
+      fd.set("slug", "bavlnena-latka");
       fd.set("price", "149.90");
       fd.set("stock", "50");
 
@@ -82,6 +83,7 @@ describe("lib/actions/products", () => {
 
       const fd = new FormData();
       fd.set("name", "Látka");
+      fd.set("slug", "latka");
       fd.set("price", "100");
       fd.set("sku", "SKU-001");
 
@@ -108,6 +110,7 @@ describe("lib/actions/products", () => {
 
       const fd = new FormData();
       fd.set("name", "Nový název");
+      fd.set("slug", "novy-nazev");
       fd.set("price", "199.00");
 
       await expect(updateProduct("prod-1", null, fd)).rejects.toThrow(
@@ -123,6 +126,7 @@ describe("lib/actions/products", () => {
 
       const fd = new FormData();
       fd.set("name", "Test");
+      fd.set("slug", "test");
       fd.set("price", "100");
 
       const result = await updateProduct("missing", null, fd);
